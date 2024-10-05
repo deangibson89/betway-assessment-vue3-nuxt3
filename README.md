@@ -1,13 +1,19 @@
-# Nuxt 3 Minimal Starter
+# Betway Assesment
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Build an open bar tab web app in your preferred frontend framework. The web app should be as slim as possible, but cover the following:
+
+- As a user I want a view that lists 3 different kinds of beverages.
+- As a user I should be able to enter how many of each type of beverage I want for a “round of drinks”.
+- As a user I should be able to submit/add the specified order or beverages to my open tab.
+- As a user I want to, optionally, enter how many people will split the total bill.
+- As a user I want to, at any time, be able to request the total of my bill - including a price per. person, if applicable.
+- As a user I would like to be able to export the tab as a CSV or PDF to give to the customer as a receipt.
 
 ## Setup
 
 Make sure to install the dependencies:
 
 ```bash
-# npm
 npm install
 ```
 
@@ -16,7 +22,6 @@ npm install
 Start the development server on `http://localhost:3000`:
 
 ```bash
-# npm
 npm run dev
 ```
 
@@ -25,15 +30,11 @@ npm run dev
 Build the application for production:
 
 ```bash
-# npm
 npm run build
 ```
 
 Locally preview production build:
 
 ```bash
-# npm
 npm run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
