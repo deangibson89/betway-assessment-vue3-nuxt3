@@ -27,21 +27,17 @@
 </script>
 
 <template>
-  <div class="h-screen bg-neutral-100">
-    <Header />
+  <div>
+    <PageTitle title="Open Tabs">
+      <Button @click="() => console.log('new tab click')">New Tab</Button>
+    </PageTitle>
 
-    <main class="container mx-auto pt-8">
-      <PageTitle title="Open Tabs">
-        <Button @click="() => console.log('new tab click')">New Tab</Button>
-      </PageTitle>
-
-      <div class="rounded-md bg-white p-6 shadow">
-        <Table
-          :columns="['ID', 'Customer', 'Table #', 'Orders', 'Total']"
-          :rows="data"
-          @row-click="({ id }) => router.push(`/tabs/${id}`)"
-        />
-      </div>
-    </main>
+    <div class="rounded-md bg-white p-6 shadow">
+      <Table
+        :columns="['ID', 'Customer', 'Table #', 'Orders', 'Total']"
+        :rows="data"
+        @row-click="({ id }) => router.push(`/tabs/${id}`)"
+      />
+    </div>
   </div>
 </template>
