@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "type-check": "npx nuxi typecheck",
-    "test": "npx vitest"
+    "test": "npx vitest --run",
+    "test.watch": "npx vitest",
+    "preflight": "npm run type-check && npm run test && npm run lint"
   },
   "dependencies": {
     "@nuxt/eslint": "^0.5.7",
