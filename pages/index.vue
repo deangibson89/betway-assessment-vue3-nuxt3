@@ -32,12 +32,12 @@
       <Button @click="() => console.log('new tab click')">New Tab</Button>
     </PageTitle>
 
-    <div class="rounded-md bg-white p-6 shadow">
+    <Card>
       <Table
         :columns="['ID', 'Customer', 'Table #', 'Orders', 'Total']"
         :rows="data"
         @row-click="({ id }) => router.push(`/tabs/${id}`)"
       />
-    </div>
+    </Card>
   </div>
 </template>
