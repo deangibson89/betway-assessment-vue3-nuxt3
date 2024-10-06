@@ -1,17 +1,21 @@
 <script setup lang="ts">
+  import type { OrderItem } from '~/types/OrderItem'
+
   const route = useRoute()
 
-  const data = [
+  const orderItems: OrderItem[] = [
     {
       id: '1',
-      item: 'Beer',
-      quantity: '4',
+      name: 'Beer',
+      price: 23.99,
+      quantity: 4,
       total: 54.99,
     },
     {
       id: '2',
-      item: 'Cider',
-      quantity: '2',
+      name: 'Cider',
+      price: 23.99,
+      quantity: 2,
       total: 34.99,
     },
   ]
@@ -30,7 +34,7 @@
       >
         <Table
           :columns="['Item', 'Price', 'Qty', 'Total']"
-          :rows="data"
+          :rows="orderItems.map(({ id, ...rest }) => rest)"
         />
       </Card>
 
@@ -38,7 +42,7 @@
         class="col-span-5 md:col-span-2"
         title="Order History"
       >
-        <span>Content</span>
+        <OrderHistoryItem />
       </Card>
     </div>
   </div>
