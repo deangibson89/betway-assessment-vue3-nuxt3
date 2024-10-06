@@ -1,5 +1,20 @@
 <script setup lang="ts">
   const route = useRoute()
+
+  const data = [
+    {
+      id: '1',
+      item: 'Beer',
+      quantity: '4',
+      total: 54.99,
+    },
+    {
+      id: '2',
+      item: 'Cider',
+      quantity: '2',
+      total: 34.99,
+    },
+  ]
 </script>
 
 <template>
@@ -13,7 +28,10 @@
         class="col-span-5 md:col-span-3"
         title="Order Items"
       >
-        <span>Content</span>
+        <Table
+          :columns="['Item', 'Price', 'Qty', 'Total']"
+          :rows="data"
+        />
       </Card>
 
       <Card
