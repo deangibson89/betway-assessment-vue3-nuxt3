@@ -8,6 +8,7 @@
   // State and variables
   const route = useRoute()
   const splitBy = ref(1)
+  const activeOrderHistoryId = ref('')
 
   const menu = ref([
     {
@@ -83,9 +84,17 @@
     return splitBy.value > 0 ? orderTotal.value / splitBy.value : 0
   })
 
+  const activeOrderHistoryOrder = computed(() => {
+    return tab.orders.filter(({ id }) => id === activeOrderHistoryId.value)[0]
+  })
+
   // Event handlers
   const updateSplitBy = (value: number) => {
     splitBy.value = value
+  }
+
+  const updateActiveOrderHistoryId = (id: string) => {
+    activeOrderHistoryId.value = id
   }
 
   const handleNewOrderSubmit = () => {
@@ -162,7 +171,7 @@
         <div class="mt-6 flex items-start justify-between">
           <div class="flex-1">
             <h3 class="tracking-none text-lg font-semibold text-neutral-900">
-              Order Total : {{ formatCurrency({ amount: orderTotal }) }}
+              Tab Total : {{ formatCurrency({ amount: orderTotal }) }}
             </h3>
             <h6
               class="tracking-none text-sm text-neutral-500"
@@ -197,7 +206,12 @@
             v-for="item in tab.orders"
             v-bind="item"
             :key="item.id"
-            @click="(id) => openOrderHistoryModal()"
+            @click="
+              (id) => {
+                updateActiveOrderHistoryId(id)
+                openOrderHistoryModal()
+              }
+            "
           />
         </div>
       </Card>
@@ -245,7 +259,38 @@
       :is-open="isOrderHistoryModalOpen"
       @close-modal="closeOrderHistoryModal"
     >
-      Order history item dialog content
+      <h4 class="mb-4 text-xl font-medium tracking-tight text-neutral-900">
+        Order Details
+      </h4>
+
+      <div class="mb-4 flex border-b border-neutral-100 pb-2 font-semibold">
+        <span class="flex-1">Item</span>
+        <span class="flex-1">Price</span>
+        <span class="flex-1">Qty</span>
+      </div>
+      <div
+        class="flex flex-col gap-2"
+        v-if="activeOrderHistoryOrder"
+      >
+        <div
+          class="flex text-neutral-500"
+          v-for="item in activeOrderHistoryOrder.items"
+          :key="item.id"
+        >
+          <span class="flex-1">{{ item.name }}</span>
+          <span class="flex-1">
+            {{ formatCurrency({ amount: item.price }) }}
+          </span>
+          <span class="flex-1">{{ item.quantity }}</span>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <h5 class="text-xl font-semibold text-neutral-800">
+          Total :
+          {{ formatCurrency({ amount: activeOrderHistoryOrder.total }) }}
+        </h5>
+      </div>
     </Dialog>
   </div>
 </template>
