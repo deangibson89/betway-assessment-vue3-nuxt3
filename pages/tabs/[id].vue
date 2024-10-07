@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import type { Order } from '~/types/Order'
   import type { OrderItem } from '~/types/OrderItem'
 
   const route = useRoute()
@@ -19,6 +20,21 @@
       total: 34.99,
     },
   ]
+
+  const orderHistory: Order[] = [
+    {
+      id: '1',
+      items: [],
+      total: 23.99,
+      createdAt: new Date(),
+    },
+    {
+      id: '2',
+      items: [],
+      total: 82.5,
+      createdAt: new Date(),
+    },
+  ]
 </script>
 
 <template>
@@ -27,7 +43,8 @@
       <Button @click="() => console.log('new order click')">New Order</Button>
     </PageTitle>
 
-    <div class="grid grid-cols-5 gap-4">
+    <div class="grid grid-cols-5 gap-6">
+      <!-- Order items -->
       <Card
         class="col-span-5 md:col-span-3"
         title="Order Items"
@@ -38,11 +55,19 @@
         />
       </Card>
 
+      <!-- Order history -->
       <Card
         class="col-span-5 md:col-span-2"
         title="Order History"
       >
-        <OrderHistoryItem />
+        <div class="flex flex-col gap-4">
+          <OrderHistoryItem
+            v-for="item in orderHistory"
+            v-bind="item"
+            :key="item.id"
+            @click="(id) => console.log(`History item ${id} click`)"
+          />
+        </div>
       </Card>
     </div>
   </div>
