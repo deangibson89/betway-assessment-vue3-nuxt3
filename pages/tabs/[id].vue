@@ -1,9 +1,16 @@
 <script setup lang="ts">
+  import type { Customer } from '~/types/Customer'
   import type { Order } from '~/types/Order'
   import type { OrderItem } from '~/types/OrderItem'
   import { formatCurrency } from '~/utils/currency'
 
   const route = useRoute()
+
+  const customer: Customer = {
+    id: '1',
+    name: 'John Wick',
+    tableNumber: 12,
+  }
 
   const orderItems: OrderItem[] = [
     {
@@ -44,7 +51,10 @@
 
 <template>
   <div>
-    <PageTitle :title="`Tab ${route.params.id}`">
+    <PageTitle
+      :title="`Tab ${route.params.id}`"
+      :subtitle="`${customer.name} | Table ${customer.tableNumber}`"
+    >
       <Button @click="() => console.log('new order click')">New Order</Button>
     </PageTitle>
 
