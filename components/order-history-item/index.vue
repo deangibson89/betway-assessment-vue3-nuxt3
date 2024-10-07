@@ -5,6 +5,10 @@
 
   const { id, total, createdAt } = defineProps<Order>()
 
+  const createdDate = computed(() => {
+    return typeof createdAt === 'string' ? new Date(createdAt) : createdAt
+  })
+
   defineEmits(['click'])
 </script>
 
@@ -12,8 +16,8 @@
   <div class="flex rounded-md border border-neutral-200 p-4">
     <div class="flex-1">
       <h6 class="text-sm text-neutral-500">
-        {{ getTimeFromDate(createdAt) }} |
-        {{ getRelativeTimeFromDate(createdAt) }}
+        {{ getTimeFromDate(createdDate) }} |
+        {{ getRelativeTimeFromDate(createdDate) }}
       </h6>
       <h4 class="text-neutral-tight text-lg font-medium leading-snug">
         {{ formatCurrency({ amount: total }) }}
