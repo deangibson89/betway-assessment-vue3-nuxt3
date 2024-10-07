@@ -5,12 +5,27 @@
   import type { Tab } from '~/types/Tab'
   import { combineOrderItems } from '~/utils/orders'
 
+  // State and variables
   const route = useRoute()
   const splitBy = ref(1)
 
-  const updateSplitBy = (value: number) => {
-    splitBy.value = value
-  }
+  const menu = ref([
+    {
+      id: 'beer',
+      name: 'Beer',
+      price: 45,
+    },
+    {
+      id: 'cider',
+      name: 'Cider',
+      price: 52,
+    },
+    {
+      id: 'premix',
+      name: 'Premix',
+      price: 59,
+    },
+  ])
 
   const tab: Tab = {
     id: 'tab-1',
@@ -67,6 +82,15 @@
   const perPersonTotal = computed(() => {
     return splitBy.value > 0 ? orderTotal.value / splitBy.value : 0
   })
+
+  // Event handlers
+  const updateSplitBy = (value: number) => {
+    splitBy.value = value
+  }
+
+  const handleNewOrderSubmit = () => {
+    console.log('handleNewOrderSubmit()')
+  }
 
   // New order modal open state and handlers
   const isNewOrderModalOpen = ref(false)
@@ -177,22 +201,51 @@
           />
         </div>
       </Card>
-
-      <!-- New order dialog -->
-      <Dialog
-        :is-open="isNewOrderModalOpen"
-        @close-modal="closeNewOrderModal"
-      >
-        New order dialog content
-      </Dialog>
-
-      <!-- Order history item dialog -->
-      <Dialog
-        :is-open="isOrderHistoryModalOpen"
-        @close-modal="closeOrderHistoryModal"
-      >
-        Order history item dialog content
-      </Dialog>
     </div>
+
+    <!-- New order dialog -->
+    <Dialog
+      :is-open="isNewOrderModalOpen"
+      @close-modal="closeNewOrderModal"
+    >
+      <h4 class="mb-4 text-xl font-medium tracking-tight text-neutral-900">
+        New Order
+      </h4>
+
+      <div>
+        <div class="mb-4 flex border-b border-neutral-100 pb-2 font-semibold">
+          <span class="flex-1">Item</span>
+          <span class="flex-1">Price</span>
+          <span class="w-[104px]">Qty</span>
+        </div>
+        <div class="flex flex-col gap-2">
+          <OrderItemField
+            v-for="item in menu"
+            :key="item.id"
+            :price="item.price"
+            :name="item.name"
+            :quantity="1"
+          />
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end gap-2">
+        <Button
+          variant="secondary"
+          @click="closeNewOrderModal"
+        >
+          Cancel
+        </Button>
+        <Button @click="handleNewOrderSubmit">Create</Button>
+      </div>
+    </Dialog>
+
+    <!-- Order history item dialog -->
+    <Dialog
+      :is-open="isOrderHistoryModalOpen"
+      @close-modal="closeOrderHistoryModal"
+    >
+      Order history item dialog content
+    </Dialog>
   </div>
 </template>
