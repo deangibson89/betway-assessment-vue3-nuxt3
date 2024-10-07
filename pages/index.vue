@@ -24,12 +24,21 @@
       total: 2389.99,
     },
   ]
+
+  // New tab open state and handlers
+  const isNewTabModalOpen = ref(false)
+  const closeNewTabModal = () => {
+    isNewTabModalOpen.value = false
+  }
+  const openNewTabModal = () => {
+    isNewTabModalOpen.value = true
+  }
 </script>
 
 <template>
   <div>
     <PageTitle title="Open Tabs">
-      <Button @click="() => console.log('new tab click')">New Tab</Button>
+      <Button @click="() => openNewTabModal()">New Tab</Button>
     </PageTitle>
 
     <Card>
@@ -39,5 +48,13 @@
         @row-click="({ id }) => router.push(`/tabs/${id}`)"
       />
     </Card>
+
+    <!-- New tab dialog -->
+    <Dialog
+      :is-open="isNewTabModalOpen"
+      @close-modal="closeNewTabModal"
+    >
+      New tab dialog content
+    </Dialog>
   </div>
 </template>
