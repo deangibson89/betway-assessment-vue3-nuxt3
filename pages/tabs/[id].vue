@@ -1,10 +1,9 @@
 <script setup lang="ts">
   import { Download, Trash2 } from 'lucide-vue-next'
-  import type { Customer } from '~/types/Customer'
-  import type { Order } from '~/types/Order'
   import { ref } from 'vue'
-  import type { OrderItem } from '~/types/OrderItem'
   import { formatCurrency } from '~/utils/currency'
+  import type { Tab } from '~/types/Tab'
+  import { combineOrderItems } from '~/utils/orders'
 
   const route = useRoute()
   const splitBy = ref(1)
@@ -13,43 +12,53 @@
     splitBy.value = value
   }
 
-  const customer: Customer = {
-    id: '1',
-    name: 'John Wick',
-    tableNumber: 12,
+  const tab: Tab = {
+    id: 'tab-1',
+    customer: {
+      id: '1',
+      name: 'John Wick',
+      tableNumber: 12,
+    },
+    orders: [
+      {
+        id: 'order-1',
+        items: [
+          {
+            id: 'beer',
+            name: 'Beer',
+            price: 45,
+            quantity: 4,
+            total: 180,
+          },
+          {
+            id: 'cider',
+            name: 'Cider',
+            price: 52,
+            quantity: 2,
+            total: 104,
+          },
+        ],
+        total: 284,
+        createdAt: new Date(),
+      },
+      {
+        id: 'order-2',
+        items: [
+          {
+            id: 'premix',
+            name: 'Premix',
+            price: 59,
+            quantity: 1,
+            total: 59,
+          },
+        ],
+        total: 59,
+        createdAt: new Date(),
+      },
+    ],
   }
 
-  const orderItems: OrderItem[] = [
-    {
-      id: '1',
-      name: 'Beer',
-      price: 23.99,
-      quantity: 4,
-      total: 54.99,
-    },
-    {
-      id: '2',
-      name: 'Cider',
-      price: 23.99,
-      quantity: 2,
-      total: 34.99,
-    },
-  ]
-
-  const orderHistory: Order[] = [
-    {
-      id: '1',
-      items: [],
-      total: 23.99,
-      createdAt: new Date(),
-    },
-    {
-      id: '2',
-      items: [],
-      total: 82.5,
-      createdAt: new Date(),
-    },
-  ]
+  const orderItems = combineOrderItems(tab.orders)
 
   const orderTotal = computed(() =>
     orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0),
@@ -82,7 +91,7 @@
   <div>
     <PageTitle
       :title="`Tab ${route.params.id}`"
-      :subtitle="`${customer.name} | Table ${customer.tableNumber}`"
+      :subtitle="`${tab.customer.name} | Table ${tab.customer.tableNumber}`"
     >
       <div class="flex gap-2">
         <Button @click="() => openNewOrderModal()"> New Order </Button>
@@ -161,7 +170,7 @@
       >
         <div class="flex flex-col gap-4">
           <OrderHistoryItem
-            v-for="item in orderHistory"
+            v-for="item in tab.orders"
             v-bind="item"
             :key="item.id"
             @click="(id) => openOrderHistoryModal()"
