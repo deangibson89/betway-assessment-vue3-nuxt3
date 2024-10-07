@@ -45,7 +45,7 @@
   ]
 
   const orderTotal = computed(() =>
-    orderItems.reduce((acc, item) => acc + item.total, 0),
+    orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0),
   )
 </script>
 
