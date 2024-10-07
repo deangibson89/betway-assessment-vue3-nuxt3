@@ -28,6 +28,7 @@
     "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.20",
     "happy-dom": "^15.7.4",
+    "nuxt-headlessui": "^1.2.0",
     "postcss": "^8.4.47",
     "prettier": "3.3.3",
     "prettier-plugin-organize-attributes": "^1.0.0",
