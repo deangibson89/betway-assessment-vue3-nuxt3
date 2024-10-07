@@ -57,6 +57,24 @@
   const perPersonTotal = computed(() => {
     return splitBy.value > 0 ? orderTotal.value / splitBy.value : 0
   })
+
+  // New order modal open state and handlers
+  const isNewOrderModalOpen = ref(false)
+  const closeNewOrderModal = () => {
+    isNewOrderModalOpen.value = false
+  }
+  const openNewOrderModal = () => {
+    isNewOrderModalOpen.value = true
+  }
+
+  // Order history modal open state and handlers
+  const isOrderHistoryModalOpen = ref(false)
+  const closeOrderHistoryModal = () => {
+    isOrderHistoryModalOpen.value = false
+  }
+  const openOrderHistoryModal = () => {
+    isOrderHistoryModalOpen.value = true
+  }
 </script>
 
 <template>
@@ -65,7 +83,7 @@
       :title="`Tab ${route.params.id}`"
       :subtitle="`${customer.name} | Table ${customer.tableNumber}`"
     >
-      <Button @click="() => console.log('new order click')">New Order</Button>
+      <Button @click="() => openNewOrderModal()"> New Order </Button>
     </PageTitle>
 
     <div class="grid grid-cols-5 gap-6">
@@ -118,10 +136,26 @@
             v-for="item in orderHistory"
             v-bind="item"
             :key="item.id"
-            @click="(id) => console.log(`History item ${id} click`)"
+            @click="(id) => openOrderHistoryModal()"
           />
         </div>
       </Card>
+
+      <!-- New order dialog -->
+      <Dialog
+        :is-open="isNewOrderModalOpen"
+        @close-modal="closeNewOrderModal"
+      >
+        New order dialog content
+      </Dialog>
+
+      <!-- Order history item dialog -->
+      <Dialog
+        :is-open="isOrderHistoryModalOpen"
+        @close-modal="closeOrderHistoryModal"
+      >
+        Order history item dialog content
+      </Dialog>
     </div>
   </div>
 </template>
