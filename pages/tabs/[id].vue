@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import type { Order } from '~/types/Order'
   import type { OrderItem } from '~/types/OrderItem'
+  import { formatCurrency } from '~/utils/currency'
 
   const route = useRoute()
 
@@ -35,6 +36,10 @@
       createdAt: new Date(),
     },
   ]
+
+  const orderTotal = computed(() =>
+    orderItems.reduce((acc, item) => acc + item.total, 0),
+  )
 </script>
 
 <template>
@@ -53,6 +58,12 @@
           :columns="['Item', 'Price', 'Qty', 'Total']"
           :rows="orderItems.map(({ id, ...rest }) => rest)"
         />
+
+        <div class="mt-6">
+          <h3 class="tracking-none text-lg font-semibold text-neutral-900">
+            Order Total : {{ formatCurrency({ amount: orderTotal }) }}
+          </h3>
+        </div>
       </Card>
 
       <!-- Order history -->
