@@ -1,10 +1,16 @@
 <script setup lang="ts">
   import type { Customer } from '~/types/Customer'
   import type { Order } from '~/types/Order'
+  import { ref } from 'vue'
   import type { OrderItem } from '~/types/OrderItem'
   import { formatCurrency } from '~/utils/currency'
 
   const route = useRoute()
+  const splitBy = ref(1)
+
+  const updateSplitBy = (value: number) => {
+    splitBy.value = value
+  }
 
   const customer: Customer = {
     id: '1',
@@ -47,6 +53,10 @@
   const orderTotal = computed(() =>
     orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0),
   )
+
+  const perPersonTotal = computed(() => {
+    return splitBy.value > 0 ? orderTotal.value / splitBy.value : 0
+  })
 </script>
 
 <template>
@@ -69,10 +79,32 @@
           :rows="orderItems.map(({ id, ...rest }) => rest)"
         />
 
-        <div class="mt-6">
-          <h3 class="tracking-none text-lg font-semibold text-neutral-900">
-            Order Total : {{ formatCurrency({ amount: orderTotal }) }}
-          </h3>
+        <!-- Order total -->
+        <div class="mt-6 flex items-start justify-between">
+          <div class="flex-1">
+            <h3 class="tracking-none text-lg font-semibold text-neutral-900">
+              Order Total : {{ formatCurrency({ amount: orderTotal }) }}
+            </h3>
+            <h6
+              class="tracking-none text-sm text-neutral-500"
+              v-if="splitBy > 1"
+            >
+              Per person :
+              <span class="font-medium text-neutral-700">{{
+                formatCurrency({ amount: perPersonTotal })
+              }}</span>
+            </h6>
+          </div>
+
+          <div class="flex items-center gap-2.5">
+            <span class="text-sm font-medium text-neutral-500"
+              >Split bill by</span
+            >
+            <Counter
+              :value="splitBy"
+              @update:value="updateSplitBy"
+            />
+          </div>
         </div>
       </Card>
 

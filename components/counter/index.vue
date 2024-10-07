@@ -22,7 +22,7 @@
 </script>
 
 <template>
-  <div class="flex overflow-hidden rounded-md">
+  <div class="flex h-7 overflow-hidden rounded-md">
     <div
       class="flex w-10 items-center justify-center rounded-bl-md rounded-tl-md border border-neutral-200"
     >
