@@ -25,10 +25,22 @@
     },
   ]
 
+  const customerName = ref('')
+  const tableNumber = ref('')
+
+  const handleSubmit = () => {
+    console.log({
+      customerName: customerName.value,
+      tableNumber: tableNumber.value,
+    })
+  }
+
   // New tab open state and handlers
   const isNewTabModalOpen = ref(false)
   const closeNewTabModal = () => {
     isNewTabModalOpen.value = false
+    customerName.value = ''
+    tableNumber.value = ''
   }
   const openNewTabModal = () => {
     isNewTabModalOpen.value = true
@@ -54,7 +66,33 @@
       :is-open="isNewTabModalOpen"
       @close-modal="closeNewTabModal"
     >
-      New tab dialog content
+      <h4 class="mb-4 text-xl font-medium tracking-tight text-neutral-900">
+        Open New Tab
+      </h4>
+
+      <div class="flex flex-col gap-2">
+        <Field
+          id="customer"
+          v-model="customerName"
+          label="Customer name"
+        />
+
+        <Field
+          id="table"
+          v-model="tableNumber"
+          label="Table number"
+        />
+      </div>
+
+      <div class="mt-6 flex justify-end gap-2">
+        <Button
+          variant="secondary"
+          @click="closeNewTabModal"
+        >
+          Cancel
+        </Button>
+        <Button @click="handleSubmit">Create</Button>
+      </div>
     </Dialog>
   </div>
 </template>
