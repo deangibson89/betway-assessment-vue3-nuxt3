@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { Download, Trash2 } from 'lucide-vue-next'
   import type { Customer } from '~/types/Customer'
   import type { Order } from '~/types/Order'
   import { ref } from 'vue'
@@ -83,7 +84,34 @@
       :title="`Tab ${route.params.id}`"
       :subtitle="`${customer.name} | Table ${customer.tableNumber}`"
     >
-      <Button @click="() => openNewOrderModal()"> New Order </Button>
+      <div class="flex gap-2">
+        <Button @click="() => openNewOrderModal()"> New Order </Button>
+        <ContextMenuButton
+          :menu-items="[
+            {
+              label: 'Export PDF',
+              icon: Download,
+              onClick: () => {
+                console.log('Export PDF clicked')
+              },
+            },
+            {
+              label: 'Export CSV',
+              icon: Download,
+              onClick: () => {
+                console.log('Export CSV clicked')
+              },
+            },
+            {
+              label: 'Delete',
+              icon: Trash2,
+              onClick: () => {
+                console.log('Delete clicked')
+              },
+            },
+          ]"
+        />
+      </div>
     </PageTitle>
 
     <div class="grid grid-cols-5 gap-6">
