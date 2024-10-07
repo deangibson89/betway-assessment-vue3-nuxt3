@@ -117,7 +117,7 @@
     <div class="grid grid-cols-5 gap-6">
       <!-- Order items -->
       <Card
-        class="col-span-5 md:col-span-3"
+        class="col-span-5 lg:col-span-3"
         title="Order Items"
       >
         <Table
@@ -156,7 +156,7 @@
 
       <!-- Order history -->
       <Card
-        class="col-span-5 md:col-span-2"
+        class="col-span-5 lg:col-span-2"
         title="Order History"
       >
         <div class="flex flex-col gap-4">
