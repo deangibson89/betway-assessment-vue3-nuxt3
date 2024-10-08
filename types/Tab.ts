@@ -6,3 +6,11 @@ export interface Tab {
   customer: Customer
   orders: Order[]
 }
+
+export interface TabTableRow {
+  id: string
+  customer: string
+  table: string
+  orders: number
+  total: number
+}

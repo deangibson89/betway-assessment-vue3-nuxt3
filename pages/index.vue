@@ -1,38 +1,44 @@
 <script setup lang="ts">
-  const router = useRouter()
+  import { onMounted } from 'vue'
+  import { createTab, fetchAllTabs } from '~/utils/storage'
+  import { v4 as uuid } from 'uuid'
+  import { getTabTableDataFromTabs } from '~/utils/orders'
+  import type { TabTableRow } from '~/types/Tab'
 
-  const data = [
-    {
-      id: '1',
-      customer: 'Bob',
-      table: '4',
-      orders: '6',
-      total: 2389.99,
-    },
-    {
-      id: '2',
-      customer: 'Bob',
-      table: '4',
-      orders: '6',
-      total: 2389.99,
-    },
-    {
-      id: '3',
-      customer: 'Bob',
-      table: '4',
-      orders: '6',
-      total: 2389.99,
-    },
-  ]
+  const router = useRouter()
 
   const customerName = ref('')
   const tableNumber = ref('')
+  const data = ref<TabTableRow[]>([])
+
+  const fetchTabs = () => {
+    const tabs = fetchAllTabs()
+    console.log({ tabs })
+
+    console.log(getTabTableDataFromTabs(tabs))
+    data.value = getTabTableDataFromTabs(tabs)
+  }
+
+  onMounted(() => {
+    fetchTabs()
+  })
 
   const handleSubmit = () => {
-    console.log({
-      customerName: customerName.value,
-      tableNumber: tableNumber.value,
-    })
+    try {
+      createTab({
+        id: `tab-${uuid()}`,
+        customer: {
+          id: `customer-${uuid()}`,
+          name: customerName.value,
+          tableNumber: parseInt(tableNumber.value),
+        },
+        orders: [],
+      })
+
+      fetchTabs()
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // New tab open state and handlers
