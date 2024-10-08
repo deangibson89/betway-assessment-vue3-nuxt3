@@ -6,6 +6,14 @@
     price: number
     quantity: number
   }>()
+
+  const emit = defineEmits<{
+    (e: 'update:quantity', value: number): void
+  }>()
+
+  const updateQuantity = (value: number) => {
+    emit('update:quantity', value)
+  }
 </script>
 
 <template>
@@ -14,6 +22,9 @@
       <span class="flex-1">{{ name }}</span>
       <span class="flex-1">{{ formatCurrency({ amount: price }) }}</span>
     </div>
-    <Counter :value="quantity" />
+    <Counter
+      :value="quantity"
+      @update:value="updateQuantity"
+    />
   </div>
 </template>

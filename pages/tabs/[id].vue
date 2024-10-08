@@ -1,10 +1,12 @@
 <script setup lang="ts">
   import { Download, Trash2 } from 'lucide-vue-next'
   import { ref, onMounted } from 'vue'
+  import { v4 as uuid } from 'uuid'
   import { formatCurrency } from '~/utils/currency'
   import type { Tab } from '~/types/Tab'
   import { combineOrderItems } from '~/utils/orders'
-  import { deleteTab, fetchTab } from '~/utils/storage'
+  import { createOrder, deleteTab, fetchTab } from '~/utils/storage'
+  import type { Order } from '~/types/Order'
 
   // State variables
   const route = useRoute()
@@ -17,16 +19,19 @@
       id: 'beer',
       name: 'Beer',
       price: 45,
+      quantity: 1,
     },
     {
       id: 'cider',
       name: 'Cider',
       price: 52,
+      quantity: 1,
     },
     {
       id: 'premix',
       name: 'Premix',
       price: 59,
+      quantity: 1,
     },
   ])
 
@@ -80,6 +85,26 @@
 
   const handleNewOrderSubmit = () => {
     console.log('handleNewOrderSubmit()')
+    try {
+      const newOrder: Order = {
+        id: `order-${uuid()}`,
+        items: [],
+        total: 0,
+        createdAt: new Date(),
+      }
+
+      // DEBUG
+      console.log(newOrder)
+
+      createOrder(tab.value.id, newOrder)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const updateItemQuantity = (id: string, quantity: number) => {
+    const item = menu.value.find((item) => item.id === id)
+    if (item) item.quantity = quantity
   }
 
   const handleExportPdf = () => {
@@ -226,7 +251,8 @@
             :key="item.id"
             :price="item.price"
             :name="item.name"
-            :quantity="1"
+            :quantity="item.quantity"
+            @update:quantity="(qty) => updateItemQuantity(item.id, qty)"
           />
         </div>
       </div>
