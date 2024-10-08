@@ -11,6 +11,7 @@
   } from '~/utils/orders'
   import { createOrder, deleteTab, fetchTab } from '~/utils/storage'
   import type { Order } from '~/types/Order'
+  import { downloadObjectAsCsv } from '~/utils/export'
 
   // State variables
   const route = useRoute()
@@ -119,7 +120,7 @@
   }
 
   const handleExportCsv = () => {
-    // TODO
+    downloadObjectAsCsv(orderItems.value)
   }
 
   const handleDelete = () => {
