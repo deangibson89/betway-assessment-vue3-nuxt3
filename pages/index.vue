@@ -13,9 +13,6 @@
 
   const fetchTabs = () => {
     const tabs = fetchAllTabs()
-    console.log({ tabs })
-
-    console.log(getTabTableDataFromTabs(tabs))
     data.value = getTabTableDataFromTabs(tabs)
   }
 
