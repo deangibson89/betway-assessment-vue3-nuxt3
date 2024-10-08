@@ -9,6 +9,10 @@
 
   const emit = defineEmits(['row-click'])
 
+  const computedRows = computed(() => {
+    return [...props.rows]
+  })
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleRowClick = (row: any) => emit('row-click', row)
 </script>
@@ -27,10 +31,10 @@
           </th>
         </tr>
       </thead>
-      <tbody v-if="rows.length > 1">
+      <tbody v-if="computedRows.length > 0">
         <tr
           class="cursor-pointer hover:bg-neutral-50"
-          v-for="row in props.rows"
+          v-for="row in computedRows"
           :key="row.id"
           @click="handleRowClick(row)"
         >
