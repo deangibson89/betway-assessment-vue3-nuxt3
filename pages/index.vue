@@ -21,6 +21,10 @@
   }
 
   // Event handlers
+  const navigateToTab = (tabId: string) => {
+    router.push(`/tabs/${tabId}`)
+  }
+
   const openNewTabModal = () => {
     isNewTabModalOpen.value = true
   }
@@ -31,11 +35,11 @@
   }
 
   const handleSubmit = () => {
-    const newTabId = uuid()
+    const newTabId = `tab-${uuid()}`
 
     try {
       createTab({
-        id: `tab-${newTabId}`,
+        id: newTabId,
         customer: {
           id: `customer-${uuid()}`,
           name: customerName.value,
@@ -47,7 +51,7 @@
       clearFormFields()
       closeNewTabModal()
 
-      router.push(`/tabs/${newTabId}`)
+      navigateToTab(newTabId)
     } catch (error) {
       console.error(error)
     }
@@ -70,7 +74,7 @@
       <Table
         :columns="['ID', 'Customer', 'Table #', 'Orders', 'Total']"
         :rows="data"
-        @row-click="({ id }) => router.push(`/tabs/${id}`)"
+        @row-click="({ id }) => navigateToTab(id)"
       />
     </Card>
 
