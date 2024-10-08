@@ -27,7 +27,7 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="rows.length > 1">
         <tr
           class="cursor-pointer hover:bg-neutral-50"
           v-for="row in props.rows"
@@ -40,6 +40,16 @@
             :key="key"
           >
             {{ row[key] }}
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr>
+          <td
+            class="h-64 text-center text-base text-neutral-400"
+            :colspan="props.columns.length"
+          >
+            No data
           </td>
         </tr>
       </tbody>

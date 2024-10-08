@@ -9,6 +9,15 @@ describe('Table', () => {
     { id: 2, Name: 'Jane Doe', Age: 25 },
   ]
 
+  it('renders a message when there are no rows', () => {
+    const wrapper = mount(Table, {
+      props: { columns, rows: [] },
+    })
+
+    const noDataMessage = wrapper.find('tbody').text()
+    expect(noDataMessage).toContain('No data')
+  })
+
   it('renders the table with correct columns and rows', () => {
     const wrapper = mount(Table, {
       props: { columns, rows },
