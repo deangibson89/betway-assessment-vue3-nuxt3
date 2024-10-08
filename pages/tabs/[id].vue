@@ -4,10 +4,11 @@
   import { formatCurrency } from '~/utils/currency'
   import type { Tab } from '~/types/Tab'
   import { combineOrderItems } from '~/utils/orders'
-  import { fetchTab } from '~/utils/storage'
+  import { deleteTab, fetchTab } from '~/utils/storage'
 
   // State variables
   const route = useRoute()
+  const router = useRouter()
   const splitBy = ref(1)
   const activeOrderHistoryId = ref('')
 
@@ -45,8 +46,8 @@
     const tabId = Array.isArray(route.params.id)
       ? route.params.id[0]
       : route.params.id
+
     const tabData = fetchTab(tabId)
-    console.log({ tabData })
 
     if (tabData) tab.value = tabData
   })
@@ -81,6 +82,19 @@
     console.log('handleNewOrderSubmit()')
   }
 
+  const handleExportPdf = () => {
+    // TODO
+  }
+
+  const handleExportCsv = () => {
+    // TODO
+  }
+
+  const handleDelete = () => {
+    deleteTab(tab.value.id)
+    router.push('/')
+  }
+
   // New order modal open state and handlers
   const isNewOrderModalOpen = ref(false)
   const closeNewOrderModal = () => {
@@ -113,23 +127,17 @@
             {
               label: 'Export PDF',
               icon: Download,
-              onClick: () => {
-                console.log('Export PDF clicked')
-              },
+              onClick: handleExportPdf,
             },
             {
               label: 'Export CSV',
               icon: Download,
-              onClick: () => {
-                console.log('Export CSV clicked')
-              },
+              onClick: handleExportCsv,
             },
             {
               label: 'Delete',
               icon: Trash2,
-              onClick: () => {
-                console.log('Delete clicked')
-              },
+              onClick: handleDelete,
             },
           ]"
         />
