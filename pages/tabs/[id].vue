@@ -116,7 +116,9 @@
   }
 
   const handleExportPdf = () => {
-    // TODO
+    // TODO: Bare minimum implementation
+    // Couldn't finish this feature because of time-constraints
+    window.print()
   }
 
   const handleExportCsv = () => {
