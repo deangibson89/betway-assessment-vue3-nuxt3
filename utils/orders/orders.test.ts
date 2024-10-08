@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { combineOrderItems } from '.'
+import type { Order } from '~/types/Order'
+import type { Tab } from '~/types/Tab'
+import {
+  combineOrderItems,
+  getTabTableDataFromTabs,
+  getTabTotalFromOrders,
+} from '.'
 
 describe('Orders Utils', () => {
   describe('combineOrderItems', () => {
@@ -65,6 +71,57 @@ describe('Orders Utils', () => {
           total: 59,
         },
       ])
+    })
+  })
+
+  describe('getTabTotalFromOrders', () => {
+    it('should return 0 for an empty orders array', () => {
+      const orders: Order[] = []
+      expect(getTabTotalFromOrders(orders)).toBe(0)
+    })
+
+    it('should return the total of all orders', () => {
+      const orders = [{ total: 100 }, { total: 200 }, { total: 300 }] as Order[]
+      expect(getTabTotalFromOrders(orders)).toBe(600)
+    })
+  })
+
+  describe('getTabTableDataFromTabs', () => {
+    it('should return an empty array for an empty tabs array', () => {
+      const tabs: Tab[] = []
+      expect(getTabTableDataFromTabs(tabs)).toEqual([])
+    })
+
+    it('should return tab table data correctly', () => {
+      const tabs: Tab[] = [
+        {
+          id: '1',
+          customer: { name: 'John Doe', tableNumber: 5, id: '1' },
+          orders: [{ total: 100 }, { total: 200 }] as Order[],
+        },
+        {
+          id: '2',
+          customer: { name: 'Jane Smith', tableNumber: undefined, id: '2' },
+          orders: [{ total: 150 }] as Order[],
+        },
+      ]
+      const expected = [
+        {
+          id: '1',
+          customer: 'John Doe',
+          table: '5',
+          orders: 2,
+          total: 300,
+        },
+        {
+          id: '2',
+          customer: 'Jane Smith',
+          table: 'NA',
+          orders: 1,
+          total: 150,
+        },
+      ]
+      expect(getTabTableDataFromTabs(tabs)).toEqual(expected)
     })
   })
 })
