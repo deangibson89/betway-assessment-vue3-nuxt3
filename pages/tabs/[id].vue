@@ -229,7 +229,10 @@
         class="col-span-5 lg:col-span-2"
         title="Order History"
       >
-        <div class="flex flex-col gap-4">
+        <div
+          class="flex flex-col gap-4"
+          v-if="tab.orders.length > 0"
+        >
           <OrderHistoryItem
             v-for="item in tab.orders"
             v-bind="item"
@@ -241,6 +244,12 @@
               }
             "
           />
+        </div>
+        <div
+          class="h-full text-center"
+          v-else
+        >
+          <span class="text-base text-neutral-400">No orders</span>
         </div>
       </Card>
     </div>
