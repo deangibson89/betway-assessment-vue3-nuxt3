@@ -40,3 +40,11 @@ Locally preview production build:
 ```bash
 npm run preview
 ```
+
+## Preflight
+
+To run both the type-checks, linting and unit tests, run:
+
+```bash
+npm run preflight
+```
