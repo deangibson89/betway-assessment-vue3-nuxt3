@@ -7,23 +7,35 @@
 
   const router = useRouter()
 
+  // State variables
   const customerName = ref('')
   const tableNumber = ref('')
   const data = ref<TabTableRow[]>([])
 
-  const fetchTabs = () => {
-    const tabs = fetchAllTabs()
-    data.value = getTabTableDataFromTabs(tabs)
+  // New tab modal open state and handlers
+  const isNewTabModalOpen = ref(false)
+  const closeNewTabModal = () => {
+    isNewTabModalOpen.value = false
+    customerName.value = ''
+    tableNumber.value = ''
   }
 
-  onMounted(() => {
-    fetchTabs()
-  })
+  // Event handlers
+  const openNewTabModal = () => {
+    isNewTabModalOpen.value = true
+  }
+
+  const clearFormFields = () => {
+    customerName.value = ''
+    tableNumber.value = ''
+  }
 
   const handleSubmit = () => {
+    const newTabId = uuid()
+
     try {
       createTab({
-        id: `tab-${uuid()}`,
+        id: `tab-${newTabId}`,
         customer: {
           id: `customer-${uuid()}`,
           name: customerName.value,
@@ -32,22 +44,20 @@
         orders: [],
       })
 
-      fetchTabs()
+      clearFormFields()
+      closeNewTabModal()
+
+      router.push(`/tabs/${newTabId}`)
     } catch (error) {
       console.error(error)
     }
   }
 
-  // New tab open state and handlers
-  const isNewTabModalOpen = ref(false)
-  const closeNewTabModal = () => {
-    isNewTabModalOpen.value = false
-    customerName.value = ''
-    tableNumber.value = ''
-  }
-  const openNewTabModal = () => {
-    isNewTabModalOpen.value = true
-  }
+  // Lifecycle hooks
+  onMounted(() => {
+    const tabs = fetchAllTabs()
+    data.value = getTabTableDataFromTabs(tabs)
+  })
 </script>
 
 <template>
