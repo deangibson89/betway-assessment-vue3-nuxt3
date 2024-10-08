@@ -1,11 +1,12 @@
 <script setup lang="ts">
   import { Download, Trash2 } from 'lucide-vue-next'
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import { formatCurrency } from '~/utils/currency'
   import type { Tab } from '~/types/Tab'
   import { combineOrderItems } from '~/utils/orders'
+  import { fetchTab } from '~/utils/storage'
 
-  // State and variables
+  // State variables
   const route = useRoute()
   const splitBy = ref(1)
   const activeOrderHistoryId = ref('')
@@ -28,53 +29,30 @@
     },
   ])
 
-  const tab: Tab = {
-    id: 'tab-1',
+  // Default tab data structure
+  const tab = ref<Tab>({
+    id: '',
     customer: {
-      id: '1',
-      name: 'John Wick',
-      tableNumber: 12,
+      id: '',
+      name: '',
+      tableNumber: 0,
     },
-    orders: [
-      {
-        id: 'order-1',
-        items: [
-          {
-            id: 'beer',
-            name: 'Beer',
-            price: 45,
-            quantity: 4,
-            total: 180,
-          },
-          {
-            id: 'cider',
-            name: 'Cider',
-            price: 52,
-            quantity: 2,
-            total: 104,
-          },
-        ],
-        total: 284,
-        createdAt: new Date(),
-      },
-      {
-        id: 'order-2',
-        items: [
-          {
-            id: 'premix',
-            name: 'Premix',
-            price: 59,
-            quantity: 1,
-            total: 59,
-          },
-        ],
-        total: 59,
-        createdAt: new Date(),
-      },
-    ],
-  }
+    orders: [],
+  })
 
-  const orderItems = combineOrderItems(tab.orders)
+  // Lifecycle hooks
+  onMounted(() => {
+    const tabId = Array.isArray(route.params.id)
+      ? route.params.id[0]
+      : route.params.id
+    const tabData = fetchTab(tabId)
+    console.log({ tabData })
+
+    if (tabData) tab.value = tabData
+  })
+
+  // Computed properties
+  const orderItems = combineOrderItems(tab.value.orders)
 
   const orderTotal = computed(() =>
     orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0),
@@ -85,7 +63,9 @@
   })
 
   const activeOrderHistoryOrder = computed(() => {
-    return tab.orders.filter(({ id }) => id === activeOrderHistoryId.value)[0]
+    return tab.value.orders.filter(
+      ({ id }) => id === activeOrderHistoryId.value,
+    )[0]
   })
 
   // Event handlers
