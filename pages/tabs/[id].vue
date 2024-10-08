@@ -39,6 +39,10 @@
     },
   ])
 
+  const tabId = Array.isArray(route.params.id)
+    ? route.params.id[0]
+    : route.params.id
+
   // Default tab data structure
   const tab = ref<Tab>({
     id: '',
@@ -50,15 +54,14 @@
     orders: [],
   })
 
+  const fetchData = () => {
+    const tabData = fetchTab(tabId)
+    if (tabData) tab.value = tabData
+  }
+
   // Lifecycle hooks
   onMounted(() => {
-    const tabId = Array.isArray(route.params.id)
-      ? route.params.id[0]
-      : route.params.id
-
-    const tabData = fetchTab(tabId)
-
-    if (tabData) tab.value = tabData
+    fetchData()
   })
 
   // Computed properties
@@ -88,7 +91,6 @@
   }
 
   const handleNewOrderSubmit = () => {
-    console.log('handleNewOrderSubmit()')
     try {
       const items = getOrderItemsFromMenu(menu.value)
       const newOrder: Order = {
@@ -99,6 +101,9 @@
       }
 
       createOrder(tab.value.id, newOrder)
+
+      closeNewOrderModal()
+      fetchData()
     } catch (error) {
       console.error(error)
     }
