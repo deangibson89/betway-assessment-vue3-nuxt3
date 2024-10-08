@@ -4,7 +4,11 @@
   import { v4 as uuid } from 'uuid'
   import { formatCurrency } from '~/utils/currency'
   import type { Tab } from '~/types/Tab'
-  import { combineOrderItems } from '~/utils/orders'
+  import {
+    combineOrderItems,
+    getOrderItemsFromMenu,
+    getOrderItemsTotal,
+  } from '~/utils/orders'
   import { createOrder, deleteTab, fetchTab } from '~/utils/storage'
   import type { Order } from '~/types/Order'
 
@@ -86,10 +90,11 @@
   const handleNewOrderSubmit = () => {
     console.log('handleNewOrderSubmit()')
     try {
+      const items = getOrderItemsFromMenu(menu.value)
       const newOrder: Order = {
         id: `order-${uuid()}`,
-        items: [],
-        total: 0,
+        items,
+        total: getOrderItemsTotal(items),
         createdAt: new Date(),
       }
 

@@ -52,3 +52,35 @@ export const getTabTableDataFromTabs = (tabs: Tab[]): TabTableRow[] => {
     total: getTabTotalFromOrders(tab.orders),
   }))
 }
+
+/**
+ * Extracts a list of order items from the given menu
+ *
+ * @param menu the menu
+ * @returns list of order items
+ */
+export const getOrderItemsFromMenu = (
+  menu: {
+    id: string
+    name: string
+    price: number
+    quantity: number
+  }[],
+): OrderItem[] => {
+  return menu.map((item) => ({
+    id: item.id,
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity,
+    total: item.price * item.quantity,
+  }))
+}
+
+/**
+ * Calculates the total for a given list of order items
+ *
+ * @param items list of order items
+ * @returns total value
+ */
+export const getOrderItemsTotal = (items: OrderItem[]): number =>
+  items.reduce((acc, item) => acc + item.total, 0)
