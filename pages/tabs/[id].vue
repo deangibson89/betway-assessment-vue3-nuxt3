@@ -62,10 +62,10 @@
   })
 
   // Computed properties
-  const orderItems = combineOrderItems(tab.value.orders)
+  const orderItems = computed(() => combineOrderItems(tab.value.orders))
 
   const orderTotal = computed(() =>
-    orderItems.reduce((acc, item) => acc + item.price * item.quantity, 0),
+    orderItems.value.reduce((acc, item) => acc + item.price * item.quantity, 0),
   )
 
   const perPersonTotal = computed(() => {
@@ -97,9 +97,6 @@
         total: getOrderItemsTotal(items),
         createdAt: new Date(),
       }
-
-      // DEBUG
-      console.log(newOrder)
 
       createOrder(tab.value.id, newOrder)
     } catch (error) {
@@ -147,7 +144,7 @@
 <template>
   <div>
     <PageTitle
-      :title="`Tab ${route.params.id}`"
+      :title="`${route.params.id}`"
       :subtitle="`${tab.customer.name} | Table ${tab.customer.tableNumber}`"
     >
       <div class="flex gap-2">
