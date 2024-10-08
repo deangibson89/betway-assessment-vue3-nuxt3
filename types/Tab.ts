@@ -12,5 +12,5 @@ export interface TabTableRow {
   customer: string
   table: string
   orders: number
-  total: number
+  total: string
 }

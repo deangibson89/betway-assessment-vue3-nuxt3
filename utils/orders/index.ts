@@ -1,6 +1,7 @@
 import type { Order } from '~/types/Order'
 import type { OrderItem } from '~/types/OrderItem'
 import type { Tab, TabTableRow } from '~/types/Tab'
+import { formatCurrency } from '../currency'
 
 /**
  * Extracts a list of all order items given a list of orders
@@ -49,7 +50,7 @@ export const getTabTableDataFromTabs = (tabs: Tab[]): TabTableRow[] => {
     customer: tab.customer.name,
     table: tab.customer.tableNumber?.toString() ?? 'NA',
     orders: tab.orders.length,
-    total: getTabTotalFromOrders(tab.orders),
+    total: formatCurrency({ amount: getTabTotalFromOrders(tab.orders) }),
   }))
 }
 

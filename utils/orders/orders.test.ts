@@ -111,14 +111,14 @@ describe('Orders Utils', () => {
           customer: 'John Doe',
           table: '5',
           orders: 2,
-          total: 300,
+          total: 'R 300.00',
         },
         {
           id: '2',
           customer: 'Jane Smith',
           table: 'NA',
           orders: 1,
-          total: 150,
+          total: 'R 150.00',
         },
       ]
       expect(getTabTableDataFromTabs(tabs)).toEqual(expected)

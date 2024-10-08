@@ -184,7 +184,12 @@
       >
         <Table
           :columns="['Item', 'Price', 'Qty', 'Total']"
-          :rows="orderItems.map(({ id, ...rest }) => rest)"
+          :rows="
+            orderItems.map(({ id, ...rest }) => ({
+              ...rest,
+              total: formatCurrency({ amount: rest.total }),
+            }))
+          "
         />
 
         <!-- Order total -->
